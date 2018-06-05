@@ -74,12 +74,16 @@
     <Allegro_AddonFont>true</Allegro_AddonFont>
     <Allegro_AddonColor>true</Allegro_AddonColor>
     <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\Project\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Allegro_AddonImage>true</Allegro_AddonImage>
     <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
     <Allegro_AddonFont>true</Allegro_AddonFont>
     <Allegro_AddonColor>true</Allegro_AddonColor>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\Project\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Allegro_AddonImage>true</Allegro_AddonImage>
@@ -99,10 +103,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>"$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\include"</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\lib;$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro_Dependencies\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>allegro.lib;allegro_main.lib;allegro_image.lib;allegro_font.lib;allegro_dialog.lib;allegro_primitives.lib;allegro_audio.lib;allegro_acodec.lib;winmm.lib;opengl32.lib;psapi.lib;shlwapi.lib;jpeg.lib;libpng16.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro-5.1.dll" "$(OutDir)"
@@ -110,11 +115,20 @@ copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_main-5
 copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_image-5.1.dll" "$(OutDir)"
 copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_font-5.1.dll" "$(OutDir)"
 copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_dialog-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_audio-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_acodec-5.1.dll" "$(OutDir)"
 copy "$(SolutionDir)TrabajoPractico PG 2 pt1\player.png" "$(OutDir)"
 copy "$(SolutionDir)TrabajoPractico PG 2 pt1\enemyR.png" "$(OutDir)"
 copy "$(SolutionDir)TrabajoPractico PG 2 pt1\enemyL.png" "$(OutDir)"
 copy "$(SolutionDir)TrabajoPractico PG 2 pt1\BulletL.png" "$(OutDir)"
-copy "$(SolutionDir)TrabajoPractico PG 2 pt1\BulletR.png" "$(OutDir)"</Command>
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\BulletR.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Background.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Menu.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\lifebar.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\lifebar2.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\lifebar3.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\hurt.wav" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\shoot.wav" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -133,14 +147,36 @@ copy "$(SolutionDir)TrabajoPractico PG 2 pt1\BulletR.png" "$(OutDir)"</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>"$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\include"</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\lib;$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro_Dependencies\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>allegro.lib;allegro_main.lib;allegro_image.lib;allegro_font.lib;allegro_dialog.lib;allegro_primitives.lib;winmm.lib;opengl32.lib;psapi.lib;shlwapi.lib;jpeg.lib;libpng16.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>allegro.lib;allegro_main.lib;allegro_image.lib;allegro_font.lib;allegro_dialog.lib;allegro_primitives.lib;allegro_audio.lib;allegro_acodec.lib;winmm.lib;opengl32.lib;psapi.lib;shlwapi.lib;jpeg.lib;libpng16.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_main-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_image-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_font-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_dialog-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_audio-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_acodec-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\player.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\enemyR.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\enemyL.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\BulletL.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\BulletR.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Background.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Menu.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\lifebar.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\lifebar2.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\lifebar3.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\hurt.wav" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\shoot.wav" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
