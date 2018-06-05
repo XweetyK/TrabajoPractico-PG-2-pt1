@@ -111,7 +111,10 @@ copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_image-
 copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_font-5.1.dll" "$(OutDir)"
 copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_dialog-5.1.dll" "$(OutDir)"
 copy "$(SolutionDir)TrabajoPractico PG 2 pt1\player.png" "$(OutDir)"
-copy "$(SolutionDir)TrabajoPractico PG 2 pt1\enemy.png" "$(OutDir)"</Command>
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\enemyR.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\enemyL.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\BulletL.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\BulletR.png" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
