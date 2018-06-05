@@ -1,0 +1,3 @@
+Observaciones:
+-Las librerias no estaban bien implementadas.
+-El codigo era funcional, el personaje caminaba y moria al entrar en contacto con el enemigo.

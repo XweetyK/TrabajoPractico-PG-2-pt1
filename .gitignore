@@ -35,3 +35,7 @@
 x64/
 Debug/
 Release/
+
+*.ipch
+
+TrabajoPractico PG 2 pt1/packages/

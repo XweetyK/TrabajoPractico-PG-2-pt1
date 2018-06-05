@@ -3,12 +3,16 @@
 #include "allegro5\color.h"
 #include "allegro5\allegro_primitives.h"
 #include <iostream>
-
+#define BVEL 5
 using namespace std;
+
 int main(int argc, char **argv) {
 	ALLEGRO_DISPLAY *display = NULL;
-	ALLEGRO_BITMAP  *image = NULL;
-	ALLEGRO_BITMAP  *image2 = NULL;
+	ALLEGRO_BITMAP  *player = NULL;
+	ALLEGRO_BITMAP  *enemy = NULL;
+	ALLEGRO_BITMAP  *bulletR = NULL;
+	ALLEGRO_BITMAP  *bulletL = NULL;
+	ALLEGRO_BITMAP *menu = NULL;
 	ALLEGRO_EVENT_QUEUE *queue;
 	ALLEGRO_TIMER *timer;
 	/* Inits */
@@ -20,8 +24,12 @@ int main(int argc, char **argv) {
 	display = al_create_display(640, 480);
 	queue = al_create_event_queue();
 	timer = al_create_timer(1.0 / 60.0);
-	image = al_load_bitmap("player.png");
-	image2 = al_load_bitmap("enemy.png");
+	player = al_load_bitmap("player.png");
+	enemy = al_load_bitmap("enemy.png");
+	bulletL = al_load_bitmap("BulletL.png");
+	bulletR = al_load_bitmap("BulletR.png");
+	menu = al_load_bitmap("Menu.png");
+
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_display_event_source(display));
 	al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -32,45 +40,74 @@ int main(int argc, char **argv) {
 	int height = al_get_display_height(display);
 	float x = 0;
 	float enemyX = 400;
+	bool dirr = true;
+	bool gameStart = false;
+	int bX=-10;
+	int b2X=-10;
+
 	/* GameLoop */
 	al_start_timer(timer);
 	while (!gameOver) {
 		ALLEGRO_EVENT event;
 		al_wait_for_event(queue, &event);
-		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-			gameOver = true;
-		}
-		if (event.type == ALLEGRO_EVENT_TIMER) {
-			al_clear_to_color(al_map_rgb(255, 255, 255));
-			al_draw_bitmap(image,x,50,0);
-			al_draw_bitmap(image2, enemyX, 0, 0);
-			al_flip_display();
-		}
 		ALLEGRO_KEYBOARD_STATE keyState;
 		al_get_keyboard_state(&keyState);
-
-		if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) {
-			x += 2;
+		//----MENU---------------------------
+		if (!gameStart) {
+			al_draw_bitmap(menu, 0, 0, 0);
 		}
-		if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) {
-			x -= 2;
+		if (al_key_down(&keyState, ALLEGRO_KEY_ENTER)) {
+			gameStart = true;
 		}
-		if (x > width - al_get_bitmap_width(image)) {
-			x = width - al_get_bitmap_width(image);
-		}
-		else if (x < 0) {
-			x = 0;
-		}
-
-		if (x + al_get_bitmap_width(image) > enemyX) {
+		//----SALIR--------------------------
+		if (al_key_down(&keyState, ALLEGRO_KEY_ESCAPE)) {
 			gameOver = true;
 		}
+		//----GAMELOOP-----------------------
+		if (gameStart == true) {
+			if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+				gameOver = true;
+			}
+			if (event.type == ALLEGRO_EVENT_TIMER) {
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_bitmap(enemy, enemyX, 50, 0);
+				al_draw_bitmap(bulletL, bX, 100, 0);
+				al_draw_bitmap(bulletR, b2X, 100, 0);
+				al_draw_bitmap(player, x, 50, 0);
+				
+			}
+			if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) {
+				x += 2;
+				dirr = false;
+			}
+			if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) {
+				x -= 2;
+				dirr = true;
+			}
+			if (x > width - al_get_bitmap_width(player)) {
+				x = width - al_get_bitmap_width(player);
+			}
+			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE)) {
+				if (dirr) { bX = x; }
+				else b2X = x;
+			}
+			else if (x < 0) {
+				x = 0;
+			}
+			if (dirr == true) { b2X += BVEL; }
+			else { bX -= BVEL; }
+
+			if (x + al_get_bitmap_width(player) > enemyX) {
+				gameOver = true;
+			}
+		}
+		al_flip_display();
 	}
 
 	/* destroy */
 	al_destroy_display(display);
-	al_destroy_bitmap(image);
-	al_destroy_bitmap(image2);
+	al_destroy_bitmap(player);
+	al_destroy_bitmap(enemy);
 	al_destroy_event_queue(queue);
 	al_uninstall_keyboard();
 	return 0;
