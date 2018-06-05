@@ -13,7 +13,8 @@ int main(int argc, char **argv) {
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_BITMAP  *player = NULL;
 	ALLEGRO_BITMAP  *enemy = NULL;
-	ALLEGRO_BITMAP  *bullet = NULL;
+	ALLEGRO_BITMAP  *bulletR = NULL;
+	ALLEGRO_BITMAP  *bulletL = NULL;
 	ALLEGRO_BITMAP *menu = NULL;
 	ALLEGRO_EVENT_QUEUE *queue;
 	ALLEGRO_TIMER *timer;
@@ -28,7 +29,8 @@ int main(int argc, char **argv) {
 	timer = al_create_timer(1.0 / 60.0);
 	player = al_load_bitmap("player.png");
 	enemy = al_load_bitmap("enemy.png");
-	bullet = al_load_bitmap("Bullet.png");
+	bulletR = al_load_bitmap("BulletR.png");
+	bulletL = al_load_bitmap("BulletL.png");
 	menu = al_load_bitmap("Menu.png");
 
 	al_register_event_source(queue, al_get_keyboard_event_source());
@@ -43,8 +45,10 @@ int main(int argc, char **argv) {
 	float enemyX = 400;
 	bool dirr = true;
 	bool gameStart = false;
-	int bX=-100;
-	bool activeBullet = false;
+	int bRX = -100;
+	int bLX = -100;
+	bool activeR = false;
+	bool activeL = false;
 
 	/* GameLoop */
 	al_start_timer(timer);
@@ -73,22 +77,31 @@ int main(int argc, char **argv) {
 			if (event.type == ALLEGRO_EVENT_TIMER) {
 				al_clear_to_color(al_map_rgb(255, 255, 255));
 				al_draw_bitmap(enemy, enemyX, 50, 0);
-				al_draw_bitmap(bullet, bX, 100, 0);
+				al_draw_bitmap(bulletR, bRX, 100, 0);
+				al_draw_bitmap(bulletL, bLX, 100, 0);
 				al_draw_bitmap(player, x, 50, 0);
 			}
 			//----KEYBOARD----
 			if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) {
 				x += 2;
-				dirr = false;
+				dirr = true;
 			}
 			if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) {
 				x -= 2;
-				dirr = true;
+				dirr = false;
 			}
 			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE)) {
-				if (!activeBullet) {
-					bX = x;
-					activeBullet = true;
+				if (dirr) {
+					if (!activeR) {
+						bRX = x;
+						activeR = true;
+					}
+				}
+				else {
+					if (!activeL) {
+						bLX = x;
+						activeL = true;
+					}
 				}
 			}
 			//----BORDERCOLLISION----
@@ -103,11 +116,18 @@ int main(int argc, char **argv) {
 				gameOver = true;
 			}
 			//----SHOOT----
-			if (activeBullet) {
-				bX += BVEL;
-				if (bX > ANCHO+10|| bX < -10) {
-					bX = DECB;
-					activeBullet = false;
+			if (activeR) {
+				bRX += BVEL;
+				if (bRX > ANCHO + 10) {
+					bRX = DECB;
+					activeR = false;
+				}
+			}
+			if (activeL) {
+				bLX -= BVEL;
+				if (bLX < -100) {
+					bLX = DECB;
+					activeL = false;
 				}
 			}
 		}
@@ -118,6 +138,7 @@ int main(int argc, char **argv) {
 	al_destroy_display(display);
 	al_destroy_bitmap(player);
 	al_destroy_bitmap(enemy);
+	al_destroy_bitmap(bulletR);
 	al_destroy_event_queue(queue);
 	al_uninstall_keyboard();
 	return 0;
