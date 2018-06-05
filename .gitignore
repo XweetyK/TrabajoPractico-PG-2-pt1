@@ -1,42 +1,4 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-#Extra
-x64/
-Debug/
-Release/
-
-*.ipch
-
 TrabajoPractico PG 2 pt1/packages/
 TrabajoPractico PG 2 pt1/bin/
+
+TrabajoPractico PG 2 pt1/\.vs/TrabajoPractico PG 2 pt1/v15/
