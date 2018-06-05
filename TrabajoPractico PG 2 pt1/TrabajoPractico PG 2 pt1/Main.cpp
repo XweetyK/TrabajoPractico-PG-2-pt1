@@ -31,13 +31,22 @@ int main(int argc, char **argv) {
 	ALLEGRO_TIMER *timer;
 	ALLEGRO_SAMPLE *hit;
 	ALLEGRO_SAMPLE *shoot;
+	ALLEGRO_SAMPLE *music;
 	/* Inits */
 	al_init();
 	al_init_image_addon();
 	al_install_keyboard();
-	al_install_audio();
 	al_init_primitives_addon();
-	al_init_acodec_addon();
+	if (!al_install_audio()) {
+		fprintf(stderr, "failed to initialize audio!\n");
+		return -1;
+	}
+
+	if (!al_init_acodec_addon()) {
+		fprintf(stderr, "failed to initialize audio codecs!\n");
+		return -1;
+	}
+
 	/* create */
 	display = al_create_display(ANCHO, ALTO);
 	queue = al_create_event_queue();
@@ -54,10 +63,18 @@ int main(int argc, char **argv) {
 	life1 = al_load_bitmap("lifebar3.png");
 	hit = al_load_sample("hurt.wav");
 	shoot = al_load_sample("shoot.wav");
-	al_reserve_samples(2);
+	music = al_load_sample("music.wav");
+	al_reserve_samples(3);
+
+	ALLEGRO_SAMPLE_INSTANCE *song = al_create_sample_instance(music);
+	al_set_sample_instance_playmode(song, ALLEGRO_PLAYMODE_LOOP);
+	al_attach_sample_instance_to_mixer(song, al_get_default_mixer());
+
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_display_event_source(display));
 	al_register_event_source(queue, al_get_timer_event_source(timer));
+
+	al_play_sample_instance(song);
 	/* Start */
 	bool gameOver = false;
 	al_flip_display();
@@ -131,12 +148,14 @@ int main(int argc, char **argv) {
 					if (!activeR) {
 						bRX = x;
 						activeR = true;
+						al_play_sample(shoot, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 					}
 				}
 				else {
 					if (!activeL) {
 						bLX = x;
 						activeL = true;
+						al_play_sample(shoot, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 					}
 				}
 			}
@@ -165,7 +184,6 @@ int main(int argc, char **argv) {
 					bRX = DECBR;
 					activeR = false;
 				}
-				al_play_sample(shoot, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 			}
 			if (activeL) {
 				bLX -= BVEL;
@@ -173,7 +191,6 @@ int main(int argc, char **argv) {
 					bLX = DECBL;
 					activeL = false;
 				}
-				al_play_sample(shoot, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 			}
 			if (bRX + al_get_bitmap_width(bulletR) >= eRX) {
 				eRX = EDEFR;
@@ -209,6 +226,9 @@ int main(int argc, char **argv) {
 	al_destroy_bitmap(life2);
 	al_destroy_bitmap(life3);
 	al_destroy_sample(hit);
+	al_destroy_sample(shoot);
+	al_destroy_sample(music);
+	al_destroy_sample_instance(song);
 
 	al_destroy_event_queue(queue);
 	return 0;
