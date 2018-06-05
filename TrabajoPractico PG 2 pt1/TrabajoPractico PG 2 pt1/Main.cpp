@@ -4,14 +4,16 @@
 #include "allegro5\allegro_primitives.h"
 #include <iostream>
 #define BVEL 5
+#define DECB -100
+#define ALTO 480
+#define ANCHO 640
 using namespace std;
 
 int main(int argc, char **argv) {
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_BITMAP  *player = NULL;
 	ALLEGRO_BITMAP  *enemy = NULL;
-	ALLEGRO_BITMAP  *bulletR = NULL;
-	ALLEGRO_BITMAP  *bulletL = NULL;
+	ALLEGRO_BITMAP  *bullet = NULL;
 	ALLEGRO_BITMAP *menu = NULL;
 	ALLEGRO_EVENT_QUEUE *queue;
 	ALLEGRO_TIMER *timer;
@@ -21,13 +23,12 @@ int main(int argc, char **argv) {
 	al_install_keyboard();
 	al_init_primitives_addon();
 	/* create */
-	display = al_create_display(640, 480);
+	display = al_create_display(ANCHO, ALTO);
 	queue = al_create_event_queue();
 	timer = al_create_timer(1.0 / 60.0);
 	player = al_load_bitmap("player.png");
 	enemy = al_load_bitmap("enemy.png");
-	bulletL = al_load_bitmap("BulletL.png");
-	bulletR = al_load_bitmap("BulletR.png");
+	bullet = al_load_bitmap("Bullet.png");
 	menu = al_load_bitmap("Menu.png");
 
 	al_register_event_source(queue, al_get_keyboard_event_source());
@@ -42,8 +43,8 @@ int main(int argc, char **argv) {
 	float enemyX = 400;
 	bool dirr = true;
 	bool gameStart = false;
-	int bX=-10;
-	int b2X=-10;
+	int bX=-100;
+	bool activeBullet = false;
 
 	/* GameLoop */
 	al_start_timer(timer);
@@ -68,14 +69,14 @@ int main(int argc, char **argv) {
 			if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 				gameOver = true;
 			}
+			//----DRAW----
 			if (event.type == ALLEGRO_EVENT_TIMER) {
 				al_clear_to_color(al_map_rgb(255, 255, 255));
 				al_draw_bitmap(enemy, enemyX, 50, 0);
-				al_draw_bitmap(bulletL, bX, 100, 0);
-				al_draw_bitmap(bulletR, b2X, 100, 0);
+				al_draw_bitmap(bullet, bX, 100, 0);
 				al_draw_bitmap(player, x, 50, 0);
-				
 			}
+			//----KEYBOARD----
 			if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) {
 				x += 2;
 				dirr = false;
@@ -84,21 +85,30 @@ int main(int argc, char **argv) {
 				x -= 2;
 				dirr = true;
 			}
+			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE)) {
+				if (!activeBullet) {
+					bX = x;
+					activeBullet = true;
+				}
+			}
+			//----BORDERCOLLISION----
 			if (x > width - al_get_bitmap_width(player)) {
 				x = width - al_get_bitmap_width(player);
-			}
-			if (al_key_down(&keyState, ALLEGRO_KEY_SPACE)) {
-				if (dirr) { bX = x; }
-				else b2X = x;
 			}
 			else if (x < 0) {
 				x = 0;
 			}
-			if (dirr == true) { b2X += BVEL; }
-			else { bX -= BVEL; }
-
+			//----ENEMYCOLLISION----
 			if (x + al_get_bitmap_width(player) > enemyX) {
 				gameOver = true;
+			}
+			//----SHOOT----
+			if (activeBullet) {
+				bX += BVEL;
+				if (bX > ANCHO+10|| bX < -10) {
+					bX = DECB;
+					activeBullet = false;
+				}
 			}
 		}
 		al_flip_display();
