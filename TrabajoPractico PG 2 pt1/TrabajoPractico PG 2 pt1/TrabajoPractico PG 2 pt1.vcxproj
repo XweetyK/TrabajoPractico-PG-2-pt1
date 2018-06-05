@@ -99,7 +99,20 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>"$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\include"</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\lib;$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro_Dependencies\lib</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_main-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_image-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_font-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\bin\allegro_dialog-5.1.dll" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\player.png" "$(OutDir)"
+copy "$(SolutionDir)TrabajoPractico PG 2 pt1\enemy.png" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -117,10 +130,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>"$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\include"</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro\lib;$(SolutionDir)TrabajoPractico PG 2 pt1\Recursos\Allegro_Dependencies\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>allegro.lib;allegro_main.lib;allegro_image.lib;allegro_font.lib;allegro_dialog.lib;allegro_primitives.lib;winmm.lib;opengl32.lib;psapi.lib;shlwapi.lib;jpeg.lib;libpng16.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
